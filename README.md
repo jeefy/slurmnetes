@@ -1,15 +1,17 @@
 # Slurmnetes
 A project to apply a traditional implementation of Slurm on Kubernetes (with some magic)
 
-This project is a decent template and starting path to run HPC clusters on Kubernetes. 
+This project is a decent template and starting path to run HPC clusters on Kubernetes.
 
 ## Dependencies
-- minikube
+- minikube (local)
 - kubectl
 - helm
 
-## Submit a job
-
+## Zero to Submitting a job (locally)
+- `git clone https://github.com/jeefy/slurmnetes`
+- `cd slurmnetes && ./start.sh`
+- Grab coffee / wait.
 - `kubectl get pods` -- Look for slurmctld-xxxxxxxxx-xxxxxx, copy that string
 - `kubectl exec -ti slurmctld-xxxxxxxxx-xxxxxx bash`
 - `sinfo` or `srun` or `sbatch` at your leisure
