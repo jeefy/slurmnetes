@@ -1,0 +1,9 @@
+{
+  "service": {
+    "name": "munged",
+    "check": {
+      "args": ["/opt/jeefy/munge/bin/check.sh"],
+      "interval": "10s"
+    }
+  }
+}

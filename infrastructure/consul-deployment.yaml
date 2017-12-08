@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.slurm.service: consul
+  name: consul
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.slurm.service: consul
+    spec:
+      containers:
+      - env:
+        - name: BOOTSTRAP_CONSUL
+          value: "true"
+        - name: DC_NAME
+          value: jeefy
+        - name: ENABLE_SYSLOG
+          value: "true"
+        - name: RUN_SERVER
+          value: "true"
+        image: qnib/alpn-consul
+        name: consul
+        ports:
+        - containerPort: 8500
+        - containerPort: 8301
+        resources: {}
+        securityContext:
+          privileged: true
+      restartPolicy: Always
+status: {}

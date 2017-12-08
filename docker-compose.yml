@@ -1,0 +1,37 @@
+consul:
+    image: qnib/alpn-consul
+    ports:
+     - "8500:8500"
+     - "8301:8301"
+    environment:
+    - DC_NAME=jeefy
+    - ENABLE_SYSLOG=true
+    - BOOTSTRAP_CONSUL=true
+    - RUN_SERVER=true
+    dns: 127.0.0.1
+    hostname: consul
+    privileged: true
+
+slurmctld:
+    image: slurmctld
+    ports:
+    - "6817:6817"
+    links:
+    - consul:consul
+    environment:
+    - DC_NAME=jeefy
+    dns: 127.0.0.1
+    hostname: slurmctld
+    privileged: true
+
+slurmd:
+    image: slurmd
+    ports:
+    - "6818:6818"
+    links:
+    - consul:consul
+    - slurmctld:slurmctld
+    environment:
+    - DC_NAME=jeefy
+    dns: 127.0.0.1
+    privileged: true

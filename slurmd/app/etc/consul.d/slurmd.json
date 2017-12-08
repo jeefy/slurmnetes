@@ -1,0 +1,10 @@
+{
+  "service": {
+    "name": "slurmd",
+    "port": 6818,
+    "check": {
+      "args": ["/opt/jeefy/slurm/bin/check_slurmd.sh"],
+      "interval": "10s"
+    }
+  }
+}

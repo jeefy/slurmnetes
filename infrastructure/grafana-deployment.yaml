@@ -1,0 +1,77 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: kube-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: grafana
+        grafana: "true"
+        role: db
+    spec:
+      containers:
+        - image: grafana/grafana
+          imagePullPolicy: Always
+          name: grafana
+          resources:
+            # keep request = limit to keep this container in guaranteed class
+            limits:
+              cpu: 100m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          env:
+            - name: GF_AUTH_BASIC_ENABLED
+              value: "false"
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "true"
+            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+              value: Admin
+          ports:
+            - containerPort: 3000
+        - name: grafana-import-dashboards
+          image: docker
+          command: ["/bin/sh", "-c"]
+          workingDir: /opt/grafana-import-dashboards
+          args:
+            # FIXME use kubernetes probe instead of "until curl"
+            - >
+              apk --update add curl ;
+              until $(curl --silent --fail --show-error --output /dev/null http://localhost:3000/api/datasources); do
+                printf '.' ; sleep 1 ;
+              done ;
+              for file in *-datasource.json ; do
+                if [ -e "$file" ] ; then
+                  echo "importing $file" &&
+                  curl --silent --fail --show-error \
+                    --request POST http://localhost:3000/api/datasources \
+                    --header "Content-Type: application/json" \
+                    --data-binary "@$file" ;
+                  echo "" ;
+                fi
+              done ;
+              for file in *-dashboard.json ; do
+                if [ -e "$file" ] ; then
+                  # wrap exported Grafana dashboard into valid json
+                  echo "importing $file" &&
+                  (echo '{"dashboard":';cat "$file";echo ',"inputs":[{"name":"DS_PROMETHEUS","pluginId":"prometheus","type":"datasource","value":"prometheus"}]}') | curl --silent --fail --show-error \
+                    --request POST http://localhost:3000/api/dashboards/import \
+                    --header "Content-Type: application/json" \
+                    --data-binary @-;
+                  echo "" ;
+                fi
+              done ;
+              while true; do
+                sleep 1m ;
+              done
+          volumeMounts:
+          - name: config-volume
+            mountPath: /opt/grafana-import-dashboards
+      volumes:
+        - name: config-volume
+          configMap:
+            name: grafana-config

@@ -1,0 +1,9 @@
+{
+  "checks": {
+    "munge": {
+      "command": "/opt/jeefy/slurm/bin/check_slurmd.sh",
+      "standalone": true,
+      "interval": 10
+    }
+  }
+}

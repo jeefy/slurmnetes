@@ -1,0 +1,22 @@
+{
+    "bootstrap": false,
+    "server": false,
+    "datacenter": "dc1",
+    "data_dir": "/var/consul",
+    "log_level": "INFO",
+    "enable_syslog": false,
+    "ui_dir": "/opt/consul-web-ui/",
+    "client_addr": "0.0.0.0",
+    "start_join": [],
+    "advertise_addr": "",
+    "advertise_addr_wan": "",
+    "node_name": "hostname",
+    "enable_script_checks" : true,
+    "recursors": [
+       "8.8.8.8"
+    ],
+    "retry_max_wan": 3,
+    "ports": {
+        "dns": 53
+    }
+}

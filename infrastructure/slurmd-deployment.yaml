@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.slurm.service: slurmd
+  name: slurmd
+spec:
+  replicas: 3
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.slurm.service: slurmd
+    spec:
+      containers:
+      - env:
+        - name: DC_NAME
+          value: jeefy
+        image: slurmd
+        imagePullPolicy: Never
+        name: slurmd
+        ports:
+        - containerPort: 6818
+        resources: {}
+        securityContext:
+          privileged: true
+      restartPolicy: Always
+status: {}
