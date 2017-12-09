@@ -14,7 +14,9 @@ minikube start --memory 8192
 helm init; kubectl rollout status -w deployment/tiller-deploy --namespace=kube-system;
 sleep 10;
 
-minikube ssh "cd /Users/jeefy/Code/slurmnetes/ && ./build.sh"
+pwd=$(pwd)
+
+minikube ssh "cd ${pwd} && ./build.sh"
 
 helm install --namespace "kube-system" -n "kubernetes" stable/prometheus --set server.service.type=NodePort
 

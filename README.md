@@ -12,7 +12,7 @@ While the focus of this is towards starting and testing locally, the Kubernetes 
 
 ## Zero to Submitting a job (locally)
 - `git clone https://github.com/jeefy/slurmnetes`
-- `cd slurmnetes && ./start.sh`
+- `cd slurmnetes && ./start.sh` -- For OSX, Minikube auto-mounts /Users/* other OSs may vary. Where you put the repo needs to be accessible to minikube (pwd on host = pwd in minikube)
 - Grab coffee / wait.
 - `kubectl get pods` -- Look for slurmctld-xxxxxxxxx-xxxxxx, copy that string
 - `kubectl exec -ti slurmctld-xxxxxxxxx-xxxxxx bash`
