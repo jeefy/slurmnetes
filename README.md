@@ -12,11 +12,13 @@ While the focus of this is towards starting and testing locally, the Kubernetes 
 
 ## Zero to Submitting a job (locally)
 - `git clone https://github.com/jeefy/slurmnetes`
-- `cd slurmnetes && ./start.sh` -- For OSX, Minikube auto-mounts /Users/* other OSs may vary. Where you put the repo needs to be accessible to minikube (pwd on host = pwd in minikube)
+- `cd slurmnetes && ./bin/start.sh` -- For OSX, Minikube auto-mounts /Users/* other OSs may vary. Where you put the repo needs to be accessible to minikube (pwd on host = pwd in minikube)
 - Grab coffee / wait.
 - `kubectl get pods` -- Look for slurmctld-xxxxxxxxx-xxxxxx, copy that string
 - `kubectl exec -ti slurmctld-xxxxxxxxx-xxxxxx bash`
 - `sinfo` or `srun` or `sbatch` at your leisure
+- For ssh, run `minikube service sshd`, note the IP:Port that pops up
+- Then run `ssh root@[IP] -p[PORT]` with a password of `root` (SSH is POC for now)
 
 ## Scaling
 Currently scaling is done by updating `slurmd-deployment.yaml` and running `kubectl apply -f infrastructure/slurmd-deployment.yaml`
