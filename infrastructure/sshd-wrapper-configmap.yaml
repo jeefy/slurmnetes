@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sshd-wrapper
+data:
+  sshd.sh: |
+    #!/bin/bash
+    source /etc/ssh/env_config
+    echo "Setting up ephemeral login node for '$USER'";
+    kubectl --token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token) --server=https://kubernetes.default --certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt run edge-node-$USER --rm -i --tty --image="$LOGIN_IMAGE" -- /bin/bash

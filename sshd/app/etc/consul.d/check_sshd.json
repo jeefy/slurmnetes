@@ -1,0 +1,13 @@
+{
+  "service": {
+    "name": "sshd",
+    "port": 22,
+    "check": {
+      "id": "ssh",
+      "name": "SSH TCP on port 22",
+      "tcp": "localhost:22",
+      "interval": "10s",
+      "timeout": "1s"
+    }
+  }
+}

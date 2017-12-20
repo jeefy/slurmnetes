@@ -6,4 +6,6 @@ cd ../slurmd
 docker build -t slurmd .
 cd ../slurmctld
 docker build -t slurmctld .
+cd ../sshd
+docker build -t sshd .
 cd ..

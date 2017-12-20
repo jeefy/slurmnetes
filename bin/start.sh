@@ -16,7 +16,7 @@ sleep 10;
 
 pwd=$(pwd)
 
-minikube ssh "cd ${pwd} && ./build.sh"
+minikube ssh "cd ${pwd} && ./bin/build.sh"
 
 helm install --namespace "kube-system" -n "kubernetes" stable/prometheus --set server.service.type=NodePort
 
@@ -39,3 +39,8 @@ kubectl apply -f infrastructure/consul-service.yaml
 kubectl apply -f infrastructure/slurmctld-deployment.yaml
 kubectl apply -f infrastructure/slurmctld-service.yaml
 kubectl apply -f infrastructure/slurmd-deployment.yaml
+
+kubectl apply -f infrastructure/sshd-configmap.yaml
+kubectl apply -f infrastructure/sshd-wrapper-configmap.yaml
+kubectl apply -f infrastructure/sshd-deployment.yaml
+kubectl apply -f infrastructure/sshd-service.yaml

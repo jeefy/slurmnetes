@@ -1,0 +1,49 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.slurm.service: sshd
+  name: sshd
+spec:
+  replicas: 2
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.slurm.service: sshd
+    spec:
+      containers:
+      - env:
+        - name: DC_NAME
+          value: jeefy
+        image: sshd
+        imagePullPolicy: Never
+        name: sshd
+        ports:
+        - containerPort: 22
+        resources: {}
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: sshd-config
+          mountPath: /etc/ssh/sshd_config
+          subPath: sshd_config
+        - name: sshd-config
+          mountPath: /etc/ssh/env_config
+          subPath: env_config
+        - name: sshd-wrapper
+          mountPath: /sshd.sh
+          subPath: sshd.sh
+      restartPolicy: Always
+      volumes:
+      - name: sshd-config
+        configMap:
+          name: sshd-config
+          defaultMode: 0644
+      - name: sshd-wrapper
+        configMap:
+          name: sshd-wrapper
+          defaultMode: 0744
+status: {}
